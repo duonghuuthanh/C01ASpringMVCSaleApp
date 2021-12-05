@@ -30,7 +30,8 @@
             <div class="card-body">
               <h4 class="card-title">${p.name}</h4>
               <p class="card-text">${p.price} VND</p>
-              <a href="#" class="btn btn-primary">Dat hang</a>
+              <a href="#" class="btn btn-primary" 
+                    onclick="addToCart(${p.id}, '${p.name}', ${p.price})">Dat hang</a>
               <a href="#" class="btn btn-danger">Xem chi tiet</a>
             </div>
         </div>

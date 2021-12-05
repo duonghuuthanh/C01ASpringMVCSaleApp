@@ -5,15 +5,18 @@
  */
 package com.dht.controllers;
 
+import com.dht.pojo.Cart;
 import com.dht.pojo.Product;
 import com.dht.pojo.User;
 import com.dht.service.CategoryService;
 import com.dht.service.ProductService;
+import com.dht.sunsaleapp.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +47,9 @@ public class HomeController {
     private ProductService productService;
     
     @ModelAttribute
-    public void commonAttributes(Model model) {
+    public void commonAttributes(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getCategories());
+        model.addAttribute("cartStats", Utils.countCart((Map<Integer, Cart>) session.getAttribute("cart")));
     }
     
     @RequestMapping("/")

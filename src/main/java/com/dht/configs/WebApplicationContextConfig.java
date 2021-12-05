@@ -45,6 +45,7 @@ public class WebApplicationContextConfig
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
     }
 
     @Override

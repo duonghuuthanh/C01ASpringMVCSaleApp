@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Trang chu</a>
+            <a class="nav-link" href="<c:url value="/" />">Trang chu</a>
         </li>
         
         <c:forEach items="${categories}" var="c">
@@ -33,6 +33,11 @@
                 <a class="nav-link" href="${action}">${c.name}</a>
             </li>
         </c:forEach>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="<c:url value="/cart" />">
+              Gio hang <span class="badge badge-info cartCounter">${cartStats.totalQuantity}</span>
+          </a>
+        </li>
       </ul>
     </div>
 
