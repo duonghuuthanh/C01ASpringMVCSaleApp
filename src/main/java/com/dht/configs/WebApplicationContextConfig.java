@@ -5,6 +5,8 @@
  */
 package com.dht.configs;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.dht.formatter.CategoryFormatter;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,11 +34,14 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {
     "com.dht.controllers",
     "com.dht.repository",
-    "com.dht.service"
+    "com.dht.service",
+    "com.dht.validators"
 })
 @EnableTransactionManagement
 public class WebApplicationContextConfig 
         implements WebMvcConfigurer {
+    
+    private LocalValidatorFactoryBean validator;
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -50,14 +56,13 @@ public class WebApplicationContextConfig
 
     @Override
     public Validator getValidator() {
-        return validator();
+        return validator;
     }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter());
     }
-    
     
     
     @Bean
@@ -70,22 +75,14 @@ public class WebApplicationContextConfig
         
         return resolver;
     }
+   
     
     @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource message = new ResourceBundleMessageSource();
-        
-        message.setBasename("messages");
-        
-        return message;
-    }
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
     
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        LocalValidatorFactoryBean v = new LocalValidatorFactoryBean();
-        
-        v.setValidationMessageSource(messageSource());
-        
-        return v;
+        return resolver;
     }
+
 }

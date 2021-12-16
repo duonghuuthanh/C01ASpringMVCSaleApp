@@ -5,8 +5,9 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 
 <h1 class="text-center text-info">QUAN LY SAN PHAM</h1>
@@ -17,7 +18,9 @@
 </div>
 </c:if>
 
-<form:form method="post" action="" modelAttribute="product">
+<c:url value="/admin/products" var="action" />
+<form:form method="post" action="${action}" 
+           enctype="multipart/form-data" modelAttribute="product">
     <form:errors path="*" element="div" cssClass="alert alert-danger" />
     
     <div class="form-group">
@@ -43,7 +46,13 @@
             </c:forEach>
         </form:select>
     </div>
+   
+    <div class="form-group">
+        <label for="file">Anh san pham</label>
+        <form:input type="file" path="file" 
+                    class="form-control" id="file" />
+    </div>
     
     <input type="submit" value="Them san pham" class="btn btn-danger" />
 </form:form>
-    <br><br>
+<br><br>

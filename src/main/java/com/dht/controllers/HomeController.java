@@ -6,31 +6,16 @@
 package com.dht.controllers;
 
 import com.dht.pojo.Cart;
-import com.dht.pojo.Product;
-import com.dht.pojo.User;
 import com.dht.service.CategoryService;
 import com.dht.service.ProductService;
 import com.dht.sunsaleapp.Utils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,10 +31,12 @@ public class HomeController {
     @Autowired
     private ProductService productService;
     
+    
     @ModelAttribute
     public void commonAttributes(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getCategories());
         model.addAttribute("cartStats", Utils.countCart((Map<Integer, Cart>) session.getAttribute("cart")));
+        model.addAttribute("currentUser", session.getAttribute("currentUser"));
     }
     
     @RequestMapping("/")
@@ -62,26 +49,5 @@ public class HomeController {
             model.addAttribute("products", this.productService.getProducts(cateId));
         
         return "index";
-    }
-    
-    @GetMapping("/admin/products")
-    public String manageProducts(Model model) {
-        model.addAttribute("product", new Product());
-        
-        return "product-admin";
-    }
-    
-    @PostMapping("/admin/products")
-    public String addProduct(Model model,
-            @ModelAttribute(value = "product") @Valid Product product,
-            BindingResult result) {
-        if (result.hasErrors())
-            return "product-admin";
-        
-        if (this.productService.addOrUpdate(product) == true)
-            return "redirect:/";
-        
-        model.addAttribute("errMsg", "He thong da xay ra loi! Vui long quay lai sau!");
-        return "product-admin";
     }
 }

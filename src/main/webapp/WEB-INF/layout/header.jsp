@@ -38,6 +38,38 @@
               Gio hang <span class="badge badge-info cartCounter">${cartStats.totalQuantity}</span>
           </a>
         </li>
+        
+        <c:if test="${pageContext.request.userPrincipal.name == null}">
+            <li class="nav-item">
+              <a class="nav-link text-success" href="<c:url value="/login" />">
+                  Dang nhap
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-success" href="<c:url value="/register" />">
+                  Dang ky
+              </a>
+            </li>
+        </c:if>
+            
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <li class="nav-item">
+              <a class="nav-link text-success" href="<c:url value="/" />">
+                  <c:if test="${currentUser != null && currentUser.avatar != null}">
+                      <img src="${currentUser.avatar}" class="rounded-circle" width="30" alt="${currentUser.username}" />
+                  </c:if>
+                  
+                  Welcome ${pageContext.request.userPrincipal.name}!
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-success" href="<c:url value="/logout" />">
+                  Dang xuat
+              </a>
+            </li>
+        </c:if>
+        
+        
       </ul>
     </div>
 
